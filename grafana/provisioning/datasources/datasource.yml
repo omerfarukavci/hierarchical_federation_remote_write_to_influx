@@ -1,0 +1,19 @@
+apiVersion: 1
+
+datasources:
+- name: Prometheus
+  type: prometheus
+  url: http://prometheus_m1:9090 
+  isDefault: true
+  access: proxy
+  editable: true
+
+- name: InfluxDB
+  type: influxdb
+  access: proxy
+  database: ${INFLUXDB_DB}
+  user: ${INFLUXDB_USERNAME}
+  password: ${INFLUXDB_PASSWORD}
+  url: http://influxdb:8086
+  #isDefault: true
+  editable: true
