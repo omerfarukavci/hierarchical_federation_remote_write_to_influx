@@ -8,6 +8,7 @@ services:
   prometheus_m1:
     image: prom/prometheus:${PROMETHEUS_TAG}
     container_name: prometheus_m1
+    restart: unless-stopped
     ports:
     - 9090:9090
     networks:
@@ -31,6 +32,7 @@ services:
   prometheus_s1:
     image: prom/prometheus:${PROMETHEUS_TAG}
     container_name: prometheus_s1
+    restart: unless-stopped
     #ports:
     #- 9091:9090
     networks:
@@ -47,6 +49,7 @@ services:
   prometheus_s2:
     image: prom/prometheus:${PROMETHEUS_TAG}
     container_name: prometheus_s2
+    restart: unless-stopped
     #ports:
     #- 9092:9090
     networks:
@@ -64,12 +67,14 @@ services:
   node_exporter1:
     image: prom/node-exporter:${NODE_EXPORTER_TAG}
     container_name: node_exporter1
+    restart: unless-stopped
     networks:
       - monitoring
     
   node_exporter2:
     image: prom/node-exporter:${NODE_EXPORTER_TAG}
     container_name: node_exporter2
+    restart: unless-stopped
     networks:
       - monitoring
     
@@ -97,14 +102,13 @@ services:
   influxdb:
     image: influxdb:${INFLUXDB_TAG}
     container_name: influxdb
+    restart: unless-stopped
     ports:
       - '8086:8086'
     networks:
       - monitoring
     volumes:
       - ./influxdb/data:/var/lib/influxdb2:rw
-    #env_file:
-      #- ./influxdb/.env
     entrypoint: ["./entrypoint.sh"]
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=${DOCKER_INFLUXDB_INIT_MODE}
@@ -120,12 +124,11 @@ services:
   telegraf:
     image: telegraf:${TELEGRAF_TAG}
     container_name: telegraf
+    restart: unless-stopped
     networks:
       - monitoring
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:rw
-    #env_file:
-      #- ./influxdb/.env
     depends_on:
       - influxdb
     environment:
