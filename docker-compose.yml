@@ -8,6 +8,7 @@ services:
   prometheus_m1:
     image: prom/prometheus:${PROMETHEUS_TAG}
     container_name: prometheus_m1
+    user: root:root
     restart: unless-stopped
     ports:
     - 9090:9090
@@ -28,6 +29,7 @@ services:
       - '--web.enable-admin-api'
     volumes:
       - ./prometheus/master/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/master/data:/prometheus:rw
     
   prometheus_s1:
     image: prom/prometheus:${PROMETHEUS_TAG}
